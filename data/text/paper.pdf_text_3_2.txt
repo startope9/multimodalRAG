@@ -1,0 +1,28 @@
+Clustering for Unsupervised Grouping: DBSCAN or 
+HDBSCAN is periodically applied over recent embeddings to 
+uncover emerging clusters of semantically related logs (e.g., a 
+new error pattern). Cluster centroids can seed new label 
+definitions or trigger automatic categorization for operational 
+analysts [7]. 
+Human-in-the-Loop 
+Feedback: 
+Flagged 
+“UNKNOWN” or low-confidence logs are presented in a 
+review UI. Analyst corrections are logged and used to: 
+●​
+Update the vector database with newly labeled 
+vectors. 
+●​
+Retrain or fine-tune the embedding model to 
+incorporate novel semantics. 
+●​
+Adjust 
+category-specific 
+similarity 
+thresholds 
+dynamically based on recent feedback. 
+IV.​ RESULTS 
+We evaluated our pipeline on a manually curated test set 
+comprising 2,500 log entries, all of which were drawn from 
+heterogeneous sources to reflect diverse real-world formats. 
+The vector store contained 4,000 pre-indexed embeddings in

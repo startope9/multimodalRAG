@@ -1,0 +1,39 @@
+OpenSearch, 
+and 
+classification 
+proceeded 
+via 
+a 
+k-nearest-neighbor majority-vote over the top ten neighbors, 
+with cosine-similarity thresholds of 0.75 and 0.85 controlling 
+assignment strictness. 
+We evaluated our k-NN–based classifier on a test set of 2 500 
+logs, using two cosine-similarity thresholds (0.75 and 0.85) to 
+control how strictly a new log must match its nearest 
+neighbors before being assigned a label. 
+●​
+Threshold = 0.75: Out of 2 500 logs, the system 
+confidently assigned labels to 1 690 entries (67.6 % 
+coverage). Of these, 1 600 were correctly tagged and 
+90 were incorrect, yielding an accuracy of 94.7 % on 
+the covered subset. The remaining 810 logs (32.4 %) 
+failed to exceed the similarity cutoff and were 
+marked as “unseen.” 
+●​
+Threshold = 0.85: With a more stringent cutoff, 
+coverage fell to 1 150 labeled logs (46.0 %). Within 
+this set, 1 100 predictions were correct and 50 
+incorrect, for an accuracy of 95.7 % on the covered 
+subset. Consequently, 1 350 logs (54.0 %) remained 
+“unseen.” 
+By 
+adjusting 
+the 
+cosine‐similarity 
+threshold, 
+practitioners can dial in exactly how “strict” the system should 
+be when assigning labels. A lower threshold (0.75) gives 
+broader coverage—labeling more logs at slightly lower 
+accuracy—while a higher threshold (0.85) yields very high 
+precision but leaves a larger fraction unlabeled. This tunable 
+trade‐off lets teams optimize for their operational priorities:

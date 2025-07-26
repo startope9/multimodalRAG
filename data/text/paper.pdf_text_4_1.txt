@@ -1,0 +1,34 @@
+accuracy—while a higher threshold (0.85) yields very high 
+precision but leaves a larger fraction unlabeled. This tunable 
+trade‐off lets teams optimize for their operational priorities: 
+maximizing recall when it’s critical to tag as many events as 
+possible, or maximizing precision when false positives have 
+high cost. 
+Beyond one‐off label prediction, embedding‐driven 
+clustering automatically groups semantically similar log 
+entries. In practice, this means that repeated or near‐duplicate 
+events—say, hundreds of identical timeout errors—collapse 
+into a single cluster. Removing these redundancies shrinks 
+data volume, speeds up storage and query operations, and 
+prevents analysts from being overwhelmed by “log spam.” 
+Instead, they see one representative message per cluster, 
+which accelerates triage, focuses attention on novel or rare 
+issues, and streamlines downstream tasks like root‐cause 
+investigation and alert prioritization. 
+As shown in Fig. 2, our AI-powered approach 
+outperforms rule-based classification across accuracy (+18%), 
+precision (+19%), and recall (+20%). These gains stem from 
+embedding-driven semantic representations, enabling better 
+generalization beyond static rule sets. The model’s improved 
+precision 
+reflects fewer false positives, while recall 
+improvements highlight its sensitivity to diverse anomaly 
+types. 
+ 
+Fig 2. Performance Comparison: AI vs Rule Based 
+V.​ CONCLUSION 
+We 
+have 
+demonstrated 
+that 
+a

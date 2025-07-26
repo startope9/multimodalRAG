@@ -1,0 +1,42 @@
+the embedding model’s last layers, ensuring embeddings 
+remain aligned with current operational semantics. 
+Dimensionality 
+Reduction 
+(Optional): 
+For 
+high-throughput use cases, an optional PCA or UMAP 
+projection reduces embedding dimensionality (to 128–256 
+dimensions) before indexing, striking a trade-off between 
+query latency and semantic fidelity [12]. 
+D.​ Vector Database Integration 
+Hierarchical Indexing with HNSW:  Embeddings are ingested 
+into a vector store implementing Hierarchical Navigable Small 
+World 
+(HNSW) 
+graphs 
+to 
+support 
+low-latency 
+k-nearest-neighbor queries with logarithmic complexity [5]. 
+Time-based index partitions facilitate retention policies and 
+rolling reindexing without service disruption. 
+Index Maintenance and Sharding: To handle 
+continuous log streams, the vector database is sharded by time 
+window (e.g., daily), ensuring write and query loads are 
+distributed evenly across nodes. Background processes rebuild 
+expired shards and merge small shards to maintain index 
+efficiency. 
+ ​
+Query APIs:  A unified REST API enables: 
+●​
+Similarity Search: k-NN lookups given a query 
+embedding. 
+●​
+Range Queries: Filtering by metadata (time range, 
+severity, host). 
+●​
+Batch Queries: Bulk classification for historical 
+analysis. 
+Fig. 1 illustrates the end-to-end pipeline of our proposed log 
+analysis framework, from ingestion to classification and 
+feedback. Logs are first collected from diverse sources in the

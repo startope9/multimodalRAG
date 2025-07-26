@@ -1,0 +1,42 @@
+recall and precision, outperforming traditional keyword‐based 
+detectors by over 12%. The work highlights the efficacy of 
+language models in capturing nuanced syntactic and semantic 
+log relationships, but notes challenges in index scalability and 
+real-time inference latency, motivating the integration of 
+vector databases for efficient retrieval. 
+In 
+study 
+[2], 
+Xie 
+et 
+al. 
+propose 
+LogGD, 
+a 
+graph‐neural‐network (GNN)–based framework for anomaly 
+detection in system logs. They construct heterogeneous graphs 
+where nodes represent log events and edges encode temporal 
+or functional relationships. By applying graph convolutional 
+layers over this structure, LogGD learns embeddings that 
+capture both local and global log dependencies. During 
+inference, anomalous nodes are identified by deviation scores 
+derived from learned graph topology features. Experiments on 
+real‐world server logs reveal that LogGD improves detection 
+F1‐score by approximately 8% relative to sequence‐model 
+baselines. This work underscores the importance of structural 
+context in log analysis and suggests that embedding graphs 
+into vector spaces can unearth anomalies undetectable by 
+sequence‐only methods. 
+In 
+paper 
+[3], 
+Pan 
+et 
+al. 
+present 
+RAGLog, 
+a 
+retrieval‐augmented generation framework for log anomaly 
+detection that integrates a retrieval component with a 
+generative language model. The retrieval module indexes 
+historical log embeddings in a vector store, allowing the

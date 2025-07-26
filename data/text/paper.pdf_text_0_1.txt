@@ -1,0 +1,40 @@
+thresholds. Experimental evaluations on synthetic and public 
+benchmark datasets show that our method achieves over 90% 
+detection accuracy while reducing query latency by up to 70% 
+compared to inverted-index alternatives. Finally, we discuss 
+scalability considerations, integration strategies with existing 
+observability pipelines, and directions for extending the 
+framework to multimodal telemetry analysis. 
+ 
+Keywords— Log Analysis; Vector Database; Embeddings; 
+Anomaly Detection; Similarity Search; Semantic Clustering. 
+I.​ INTRODUCTION 
+The rapid adoption of distributed architectures, microservices, 
+and cloud-native platforms has resulted in a dramatic increase 
+in the volume, velocity, and variety of log data, which are 
+indispensable for observability, debugging, and security 
+analysis [1], [2]. Conventional approaches—rooted in 
+keyword searches, regular expressions, or inverted‐index 
+mechanisms—often fail to capture the nuanced semantic 
+relationships among log entries and cannot scale efficiently 
+under real‐time constraints [3]. Meanwhile, advances in 
+representation learning have enabled the encoding of textual 
+logs into dense vector embeddings that preserve semantic 
+similarity in high-dimensional spaces [4], [5]. When paired 
+with 
+vector 
+databases 
+optimized 
+for 
+approximate 
+nearest-neighbor 
+searches, 
+these 
+embeddings 
+facilitate 
+low-latency retrieval, enabling more effective anomaly 
+detection, 
+similarity-based 
+grouping, 
+and 
+root-cause

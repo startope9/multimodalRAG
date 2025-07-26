@@ -1,0 +1,45 @@
+improvements highlight its sensitivity to diverse anomaly 
+types. 
+ 
+Fig 2. Performance Comparison: AI vs Rule Based 
+V.​ CONCLUSION 
+We 
+have 
+demonstrated 
+that 
+a 
+vector‐database–backed pipeline—combining LLM‐driven 
+summarization, high‐dimensional embeddings, and k‐NN 
+classification—can flexibly balance precision and coverage to 
+meet varying operational goals, while embedding‐based 
+clustering effectively collapses redundant logs to streamline 
+analyst workflows. Our evaluation on a 2 500‐entry test set 
+showed that tuning cosine thresholds allows teams to favor 
+broader coverage or tighter accuracy as needed, and that 
+semantically similar events naturally coalesce into meaningful 
+clusters, reducing noise and accelerating triage. Going 
+forward, we will quantify clustering quality, instrument 
+end‐to‐end performance metrics for real‐time readiness, and 
+explore adaptive thresholds and full LLM fine‐tuning to 
+further enhance accuracy, responsiveness, and continuous 
+adaptation in production environments. 
+VI.​ FUTURE ENHANCEMENT 
+Looking ahead, we plan to enhance our pipeline along several 
+fronts to boost its adaptability, efficiency, and coverage. First, 
+we will implement adaptive similarity thresholds that 
+automatically recalibrate based on recent classification 
+outcomes 
+and 
+analyst 
+feedback, 
+smoothing 
+the 
+precision–coverage trade-off without manual tuning. Second, 
+we 
+aim 
+to 
+extend 
+from 
+batch 
+to 
+streaming
