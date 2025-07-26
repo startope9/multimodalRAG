@@ -1,5 +1,0 @@
-detection that integrates a retrieval component with a 
-generative language model. The retrieval module indexes 
-historical log embeddings in a vector store, allowing the 
-system to fetch semantically similar past events when a new 
-log arrives. These retrieved logs are then concatenated with
