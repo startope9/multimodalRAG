@@ -1,0 +1,38 @@
+detectors and a 30% reduction in false positives. The study 
+also examines vector‐indexing strategies, advocating for 
+in‐memory ANN indexes to balance throughput and resource 
+utilization. 
+In [7], the authors propose a real‐time, semi‐supervised log 
+anomaly detection framework leveraging probabilistic topic 
+modeling. They employ Latent Dirichlet Allocation (LDA) to 
+discover latent topics across log streams, generating 
+topic‐distribution vectors that serve as semantic embeddings. 
+These vectors are indexed in a vector database to enable 
+efficient 
+streaming 
+queries 
+and 
+clustering. 
+The 
+semi‐supervised component uses a small set of labeled 
+anomalies to guide the topic model toward discriminative 
+patterns. The system achieves up to 92% detection accuracy 
+with minimal labeling effort and supports adaptive retraining 
+to accommodate evolving log patterns, highlighting the 
+practical 
+benefits 
+of 
+combining 
+topic 
+models 
+with 
+vector‐based retrieval. 
+In [8], the Ladle method is introduced for unsupervised 
+anomaly detection across heterogeneous log types. Ladle 
+employs a two‐stage pipeline: first, it normalizes and clusters 
+log events into coarse semantic groups using k‐means on raw 
+token‐frequency features; second, it refines clusters by 
+computing dense embeddings with a lightweight language 
+model and indexing them in an ANN structure for 
+fine‐grained similarity search. Anomalies are detected as 
+events that fail to find sufficiently similar neighbors.

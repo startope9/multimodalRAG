@@ -1,0 +1,12 @@
+(e.g., differentiating a “timeout” error on a web server vs. 
+database server). 
+C.​ Embedding Generation 
+Pretrained Embedding Models: Normalized and summarized 
+messages are passed through a fixed-size embedding 
+model—such as a sentence-transformer or a distilled BERT 
+variant—to produce high-dimensional vectors (e.g., 768- or 
+1024-dimensional) that capture semantic similarity [4], [6]. 
+Dynamic Embedding Augmentation: To adapt to 
+evolving log vocabularies, newly ingested tokens and 
+templates are periodically incorporated via online fine-tuning. 
+A small buffer of representative log samples is used to update

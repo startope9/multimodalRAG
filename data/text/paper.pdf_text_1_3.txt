@@ -1,0 +1,25 @@
+model and indexing them in an ANN structure for 
+fine‐grained similarity search. Anomalies are detected as 
+events that fail to find sufficiently similar neighbors. 
+Evaluations demonstrate that Ladle excels in mixed‐format 
+log environments, reducing false alarms by 20% compared to 
+single‐stage embedding methods and showcasing the utility of 
+layered clustering integrated with vector databases. 
+In [9], the authors explore unsupervised log anomaly detection 
+with few unique tokens, targeting environments where logs 
+contain highly repetitive templates with minimal vocabulary. 
+They propose a character‐level autoencoder that compresses 
+raw log lines into compact embeddings, which are then 
+indexed in an ANN for neighbor‐based anomaly scoring. The 
+approach is robust to sparse token spaces and achieves recall 
+above 85% on server logs with limited token diversity. This 
+work underscores that embedding granularity—from word‐ to 
+character‐level—can be tuned to match log characteristics and 
+still benefit from vector‐database indexing for efficient 
+nearest‐neighbor retrieval. 
+In study [10], the authors revisit semantic embedding and 
+neural innovations for log anomaly detection, extending 
+earlier transformer‐based embedding techniques with graph 
+neural networks and attention‐based clustering. They propose 
+a dual‐encoder architecture where one branch captures 
+token‐level semantics and the other encodes event‐sequence

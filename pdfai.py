@@ -295,25 +295,34 @@ def invoke_local_llama(llm, query, context_items, chat_history, max_context_toke
             history_str += f"Human: {h['user']}\nAssistant: {h['bot']}\n\n"
     
     # Improved prompt with clear instructions
-    full_prompt = f"""You are a polite and helpful assistant.
-        You must generate response to the user's query using the provided context.
-        Use the conversation history to understand the user's intent.
-        **DO NOT add any additional context or information that is not in the provided context**.
-        response must be concise to the user's query.
-        **Only** return the response, nothing else.
-        DO NOT hallucinate.
+    full_prompt = f"""**System Prompt:**
 
-        Below is the context you can use to response the user's query:
-        {context}
-        
-        Below is the conversation history:
-        {history_str}
-        
-        Below is the user's query:
-        {query}
-        
-        Generate a concise response to the user's query based on the provided context.
-        response:"""
+You are a helpful and knowledgeable AI assistant. Your goal is to answer user questions accurately and comprehensively, drawing information from the provided context and considering the conversation history. Avoid making assumptions or providing information not explicitly supported by the given context. If the requested information is not found in the context, clearly state that you lack sufficient information to answer the question. 
+
+**Conversation History:**
+
+{history_str}  
+
+**Context:**
+
+{context} 
+
+**User Question:**
+
+{query}
+
+**Instructions:**
+
+1. Analyze the conversation history and the current user question to understand the user's intent and any implied context.
+2. Carefully examine the provided context (retrieved documents) to find the most relevant information to answer the user's question.
+3. Synthesize the information from the context and incorporate it into a coherent and helpful response.
+4. If the conversation history provides additional details or clarifications, leverage those to refine the answer and provide more nuanced responses.
+5. If the context does not contain enough information to fully answer the question, acknowledge that limitation and avoid generating speculative or inaccurate content.
+6. Structure your response clearly, potentially using bullet points or concise paragraphs, depending on the complexity of the answer.
+7. Maintain a polite, informative, and helpful tone throughout the interaction.
+
+Generate the response based on the above guidelines, ensuring it is relevant to the user's question and supported by the provided context. Do not include any additional commentary or explanations outside of the response itself.
+Response:"""
     
     print(f"[DEBUG] Prompt length: {len(full_prompt)} characters")
     
@@ -347,11 +356,12 @@ def transform_query(llm, user_query, chat_history, items):
             history_str += f"Human: {h['user']}\nAssistant: {h['bot']}\n"
     
     # Improved query transformation prompt
-    prompt =  f"""You are a helpful assistant for search. 
-            Rewrite the user's question to be as clear, specific, and consice, 
-            do not add new context or information, just refine it
-            using the conversation history and the following document preview for context. 
-            Please Do NOT introduce unrelated topics. If the question is already clear, return it unchanged. 
+    prompt =  f"""You are a helpful assistant for search in RAG retrieval. 
+            Rewrite the user's question to be as clear, consice, 
+            do not add new context or information, just rewrite it
+            use the conversation history and the following document preview to understand the subject matter. 
+            Do NOT introduce unrelated topics. If the question is already clear, return it unchanged. 
+            If the query is a compliment or greeting, acknowledge it politely.
             Only return the rewritten question, nothing else.\n\n
             Document preview:\n{doc_preview}\n\n
             Conversation history:\n{history_str}\n\n

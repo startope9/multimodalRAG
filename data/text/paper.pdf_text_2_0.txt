@@ -1,0 +1,35 @@
+strategies to maintain low‐latency queries at scale. While not 
+specific to anomaly detection, the blog provides practical 
+guidance on deploying vector databases in production, 
+highlighting considerations such as index rebuild scheduling 
+and memory footprint management critical for real-time log 
+analytics pipelines. 
+In [12], a Medium post presents an accessible overview of 
+similarity search and vector databases, focusing on the 
+mathematical foundations of embedding spaces and ANN 
+algorithms. The author walks through embedding generation, 
+index ingestion, and query-time tuning parameters like 
+efSearch and efConstruction for HNSW indices. Although 
+targeted at beginners, the tutorial underscores challenges such 
+as 
+“curse 
+of 
+dimensionality” 
+and 
+suggests 
+dimensionality‐reduction techniques (e.g., PCA) to optimize 
+both storage and retrieval latency, which directly inform the 
+design of log‐analysis systems relying on vector indices. 
+In [13], KDnuggets publishes a primer on semantic search 
+with vector databases, highlighting use cases in search, 
+recommendation, 
+and 
+anomaly 
+detection. 
+The article 
+compares open‐source vector stores (e.g., FAISS, Annoy) and 
+managed cloud offerings, evaluating trade‐offs in throughput, 
+latency, and ease of integration. It also showcases code 
+snippets for indexing sentence‐transformer embeddings and 
+executing k‐NN queries, providing a practical foundation for 
+researchers implementing log‐analysis prototypes that require
