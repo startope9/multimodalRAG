@@ -17,8 +17,11 @@ import logging
 import os
 import pymupdf
 import time
+from sentence_transformers import CrossEncoder
 
 import fitz  # PyMuPDF
+
+MAX_TURNS = 5
 
 def ocr_image_inline(doc, xref):
     pix = fitz.Pixmap(doc, xref)
@@ -284,7 +287,7 @@ def invoke_local_llama(llm, query, context_items, chat_history, max_context_toke
                 context_sections.append(f"[Context {i+1}] (Score: {similarity:.3f})\n{content}")
     
     # Limit context length
-    context = "\n\n".join(context_sections)[:2500]
+    context = "\n\n".join(context_sections)
     
     # Build conversation history
     history_str = ""
@@ -297,7 +300,7 @@ def invoke_local_llama(llm, query, context_items, chat_history, max_context_toke
     # Improved prompt with clear instructions
     full_prompt = f"""**System Prompt:**
 
-You are a helpful and knowledgeable AI assistant. Your goal is to answer user questions accurately and comprehensively, drawing information from the provided context and considering the conversation history. Avoid making assumptions or providing information not explicitly supported by the given context. If the requested information is not found in the context, clearly state that you lack sufficient information to answer the question. 
+You are a helpful AI assistant. Your goal is to answer user questions accurately and comprehensively, drawing information from the provided context and considering the conversation history. Avoid generating context from your own knowledge base. If the requested information is not found in the context, clearly state that you lack sufficient information to answer the question. 
 
 **Conversation History:**
 
@@ -314,14 +317,14 @@ You are a helpful and knowledgeable AI assistant. Your goal is to answer user qu
 **Instructions:**
 
 1. Analyze the conversation history and the current user question to understand the user's intent and any implied context.
-2. Carefully examine the provided context (retrieved documents) to find the most relevant information to answer the user's question.
+2. Carefully examine the provided context (retrieved documents) to generate the most relevant information to answer the user's question.
 3. Synthesize the information from the context and incorporate it into a coherent and helpful response.
 4. If the conversation history provides additional details or clarifications, leverage those to refine the answer and provide more nuanced responses.
 5. If the context does not contain enough information to fully answer the question, acknowledge that limitation and avoid generating speculative or inaccurate content.
 6. Structure your response clearly, potentially using bullet points or concise paragraphs, depending on the complexity of the answer.
 7. Maintain a polite, informative, and helpful tone throughout the interaction.
 
-Generate the response based on the above guidelines, ensuring it is relevant to the user's question and supported by the provided context. Do not include any additional commentary or explanations outside of the response itself.
+Generate the response based on the above guidelines.
 Response:"""
     
     print(f"[DEBUG] Prompt length: {len(full_prompt)} characters")
@@ -353,14 +356,14 @@ def transform_query(llm, user_query, chat_history, items):
     if chat_history:
         recent_history = chat_history[-2:]  # Last 2 exchanges
         for h in recent_history:
-            history_str += f"Human: {h['user']}\nAssistant: {h['bot']}\n"
+            history_str += f"Human: {h['user']}\nAssistant: {h['bot'][:1000]}\n\n"
     
     # Improved query transformation prompt
     prompt =  f"""You are a helpful assistant for search in RAG retrieval. 
             Rewrite the user's question to be as clear, consice, 
-            do not add new context or information, just rewrite it
+            **do not add new context or information, just rewrite it**
             use the conversation history and the following document preview to understand the subject matter. 
-            Do NOT introduce unrelated topics. If the question is already clear, return it unchanged. 
+            **Do NOT introduce unrelated topics. If the question is already clear, return it unchanged. **
             If the query is a compliment or greeting, acknowledge it politely.
             Only return the rewritten question, nothing else.\n\n
             Document preview:\n{doc_preview}\n\n
@@ -385,7 +388,7 @@ def transform_query(llm, user_query, chat_history, items):
 
 
 if __name__ == '__main__':
-    filepath = "paper.pdf"
+    filepath = input("Enter the path to the PDF file: ").strip()
     base_dir = "data"
     
     # Check if PDF exists
@@ -395,7 +398,7 @@ if __name__ == '__main__':
     
     create_directories(base_dir=base_dir)
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500, chunk_overlap=200, length_function=len)
+        chunk_size=1500, chunk_overlap=100, length_function=len)
     items = []
 
     # Open both pymupdf and pdfplumber docs
@@ -536,7 +539,20 @@ if __name__ == '__main__':
             try:
                 query_emb = get_text_embedding(improved_query)
                 matched_items = query_pinecone(vIndex, indexed_items, query_emb, top_k=5)
-                
+                reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
+                # Compute rerank scores
+                rerank_scores = reranker.predict([(improved_query, item['text']) for item in matched_items])
+                for item, score in zip(matched_items, rerank_scores):
+                    item['rerank_score'] = float(score)
+
+                matched_items = sorted(matched_items, key=lambda x: x['rerank_score'], reverse=True)[:3]
+                # Debug print before sorting
+                print("\n🔍 Rerank Scores:")
+                for i, item in enumerate(matched_items):
+                    print(f"{i+1}. Score: {item['rerank_score']:.4f} | Text: {item['text'][:80]}...")
+
+        
                 # Generate response
                 response = invoke_local_llama(llm, improved_query, matched_items, chat_history)
                 print(f"\nAssistant: {response}")
@@ -553,6 +569,8 @@ if __name__ == '__main__':
                 
                 # Update chat history
                 chat_history.append({"user": user_prompt, "bot": response})
+                if len(chat_history) > MAX_TURNS:
+                    chat_history[:] = chat_history[-MAX_TURNS:]
                 memory.save_context({"user": user_prompt}, {"bot": response})
                 
             except Exception as e:
